@@ -23,6 +23,7 @@ public class Servidor extends Thread {
     String nombreServidor;
     int puertoServidor = 5000;
     byte[] buffer = new byte[1024];
+    int i = 0;
 
     public Servidor(String nombreServidor) {
         this.nombreServidor = nombreServidor;
@@ -35,11 +36,10 @@ public class Servidor extends Thread {
             String ipMulti = "225.0.0.0";
             InetAddress addr = InetAddress.getByName(ipMulti);
             DatagramSocket socket_servidor = new DatagramSocket();
-            int i = 0;
+            System.out.println("SERVIDOR > Iniciado servidor UDP");
             while (i <= 100) {
                 buffer = new byte[1024];
                 String mensaje = "PORCENTAJE " + i + " %";
-                System.out.println("SERVIDOR > Iniciado servidor UDP");
 
                 DatagramPacket paquete_recibido = new DatagramPacket(mensaje.getBytes(), mensaje.length(), addr, this.puertoServidor);
                 System.out.println("SERVIDOR > Enviando paquete por multicast " + mensaje);
@@ -49,6 +49,7 @@ public class Servidor extends Thread {
                 i = i + 10;
 
             }
+            socket_servidor.close();
         } catch (SocketException ex) {
             Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -58,4 +59,5 @@ public class Servidor extends Thread {
         }
 
     }
+
 }

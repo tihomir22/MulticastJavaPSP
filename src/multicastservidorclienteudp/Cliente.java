@@ -20,35 +20,44 @@ import java.util.logging.Logger;
  * @author mati
  */
 public class Cliente extends Thread {
-
+    
     final int puertoServidor = 5000;
     byte[] buffer = new byte[1024];
     private String nombreCliente;
-
+    
     public Cliente(String nombreCliente) {
         this.nombreCliente = nombreCliente;
     }
-
+    
     @Override
-    public void run() {
+    public synchronized void run() {
         try {
+            String msg = "inicio";
             String ipMulti = "225.0.0.0";
             InetAddress address = InetAddress.getByName(ipMulti);
             byte[] buf = new byte[256];
-
+            
             MulticastSocket socketMulticast = new MulticastSocket(this.puertoServidor);
             socketMulticast.joinGroup(address);
-            while (true) {
+            while (!msg.equalsIgnoreCase(100 + "")) {
+                if (msg.equalsIgnoreCase("inicio") && this.nombreCliente.equalsIgnoreCase("Cliente 3 > ")) {
+                    Thread.sleep(2000);
+                }
                 DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
                 socketMulticast.receive(msgPacket);
-                String msg = new String(msgPacket.getData());
+                msg = new String(msgPacket.getData());
                 System.out.println(this.nombreCliente + " Hemos recibido " + msg);
+                msg = msg.split(" ")[1];
+                Thread.sleep(1000);
+                
             }
         } catch (UnknownHostException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
 }

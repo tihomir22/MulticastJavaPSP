@@ -15,10 +15,10 @@ public class MulticastServidorClienteUDP {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Servidor server = new Servidor("Dembow server");
-        Cliente cli = new Cliente("Dembow cliente");
-        Cliente cli2 = new Cliente("Dembow cliente2");
-        Cliente cli3 = new Cliente("Dembow cliente3");
+        Servidor server = new Servidor("Servidor 1 ");
+        Cliente cli = new Cliente("Cliente 1 > ");
+        Cliente cli2 = new Cliente("Cliente 2 > ");
+        Cliente cli3 = new Cliente("Cliente 3 > ");
         server.start();
         cli.start();
         cli2.start();
